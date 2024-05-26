@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import { userServices } from "./06.user.service";
 
 // create student

@@ -61,6 +61,12 @@ const StudentSchema = new Schema<TStudent, StudentModel>({
         type: userNameSchema,
         required: [true, 'are bhai bhai bhai! Name field kidar hein?'] //createing custom error message with mongoose.
     },
+    user: {
+        type: Schema.Types.ObjectId,
+        required: [true, 'User is required.'],
+        unique: true,
+        ref: 'User'
+    },
     gender: {
         type: String,
         enum: {
@@ -112,7 +118,6 @@ const StudentSchema = new Schema<TStudent, StudentModel>({
         },
         contantNo: { type: String, required: true }
     },
-    isActive: { type: Boolean, required: true },
     isDeleted: { type: Boolean, default: false },
 }, {
     toJSON: {
@@ -121,58 +126,7 @@ const StudentSchema = new Schema<TStudent, StudentModel>({
 })
 
 
-// virtual
-StudentSchema.virtual('fullname').get(function () {
-    return `${this.name.firstName} ${this.name.middlename} ${this.name.lastName}`;
-})
-
-
-// Pre save middleware or hook //will work on create() or save()
-StudentSchema.pre('save', async function (next) {
-    const user = this;
-    user.password = await bcrypt.hash(user.password,
-        Number(configaration.bcrypt_salt_round));
-
-    next();
-})
-
-
-// Post save middleware or hook
-StudentSchema.post('save', function (document, next) {
-    document.password = '',
-        next();
-})
-
-
-// query middleware
-StudentSchema.pre('find', function (next) {
-    this.find({ isDeleted: { $ne: true } })
-    next();
-});
-
-
-StudentSchema.pre('aggregate', function (next) {
-    this.pipeline().unshift({
-        $match: { isDeleted: { $ne: true } }
-    })
-    next();
-})
-
-
-
-// custom instant method
-// StudentSchema.methods.isStudentExist = async function (id: number) {
-//     const existUser = await Student.findOne({ id });
-//     return existUser;
-// }
-
-// custom static  method
-
-StudentSchema.statics.isStudentExist = async function (id: number) {
-    const existingUser = await Student.findOne({ id });
-    return existingUser;
-}
 
 
 // model
-export const Student = model<TStudent, StudentModel>('Student', StudentSchema); 
+export const studentModel = model<TStudent, StudentModel>('Students', StudentSchema); 

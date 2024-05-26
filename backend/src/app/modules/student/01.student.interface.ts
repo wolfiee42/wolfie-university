@@ -1,8 +1,9 @@
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 
 // Main interface of the file.
 export type TStudent = {
     id: number;
+    user: Types.ObjectId;
     password: string,
     name: TUserName;
     gender: 'Male' | 'Female';
@@ -14,7 +15,6 @@ export type TStudent = {
     presentAddress: TAddress;
     permanentAddress: TAddress;
     localGuardian: TLocalGuardian;
-    isActive: boolean;
     isDeleted?: boolean;
 }
 
