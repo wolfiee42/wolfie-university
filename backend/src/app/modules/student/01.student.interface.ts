@@ -4,7 +4,6 @@ import { Model, Types } from "mongoose";
 export type TStudent = {
     id: number;
     user: Types.ObjectId;
-    password: string,
     name: TUserName;
     gender: 'Male' | 'Female';
     email?: string;

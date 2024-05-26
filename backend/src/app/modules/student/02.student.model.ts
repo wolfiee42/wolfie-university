@@ -56,7 +56,6 @@ const addressSchema = new Schema<TAddress>({
 // main schema of the folder
 const StudentSchema = new Schema<TStudent, StudentModel>({
     id: { type: Number, required: true, unique: true },
-    password: { type: String, required: true, max: [20, 'bhai, kindly 20 character er beshi password diyen na.'] },
     name: {
         type: userNameSchema,
         required: [true, 'are bhai bhai bhai! Name field kidar hein?'] //createing custom error message with mongoose.

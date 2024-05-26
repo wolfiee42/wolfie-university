@@ -33,7 +33,6 @@ const localGuardianValidationSchema = z.object({
 
 export const studentValidationSchema = z.object({
     id: z.number().positive('ID must be positive'),
-    password: z.string().max(20),
     name: userNameValidationSchema,
     gender: z.enum(['Male', 'Female']),
     email: z.string().email('Invalid email format').optional(),
