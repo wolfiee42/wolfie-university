@@ -31,18 +31,25 @@ const localGuardianValidationSchema = z.object({
     contantNo: z.string().regex(/^\d+$/, 'Contact number must be digits only'),
 });
 
-export const studentValidationSchema = z.object({
-    id: z.number().positive('ID must be positive'),
-    name: userNameValidationSchema,
-    gender: z.enum(['Male', 'Female']),
-    email: z.string().email('Invalid email format').optional(),
-    contantNo: z.number().positive('Contact number must be positive'),
-    emergencyContactNo: z.number().positive('Contact number must be positive').optional(),
-    bloodGroup: z.enum(['A', 'B', 'AB', 'O', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
-    guardian: guardianValidationSchema,
-    presentAddress: addressValidationSchema,
-    permanentAddress: addressValidationSchema,
-    localGuardian: localGuardianValidationSchema,
-    isActive: z.boolean(),
-    isDeleted: z.boolean().optional(),
-});
+const studentValidationSchema = z.object({
+    body: z.object({
+        password: z.string().max(20),
+        student: z.object({
+            name: userNameValidationSchema,
+            gender: z.enum(['Male', 'Female']),
+            email: z.string().email('Invalid email format').optional(),
+            contantNo: z.number().positive('Contact number must be positive'),
+            emergencyContactNo: z.number().positive('Contact number must be positive').optional(),
+            bloodGroup: z.enum(['A', 'B', 'AB', 'O', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
+            guardian: guardianValidationSchema,
+            presentAddress: addressValidationSchema,
+            permanentAddress: addressValidationSchema,
+            localGuardian: localGuardianValidationSchema,
+        })
+    })
+})
+
+
+export const studentValidation = {
+    studentValidationSchema,
+}
