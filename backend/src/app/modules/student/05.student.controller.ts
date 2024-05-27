@@ -1,58 +1,64 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, RequestHandler, Response, response } from "express";
 import { studentServices } from "./06.student.service";
+import sendResponse from "../../utils/sendResponse";
+import httpStatus from "http-status";
 
+
+
+
+const catchAsync = (fn: RequestHandler) => {
+
+    return (req: Request, res: Response, next: NextFunction) => {
+        Promise.resolve(fn(req, res, next)).catch((err) => next(err))
+    }
+}
 
 
 // get a single students information
-const getSingleStudent = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const email = req.params.email;
-        const result = await studentServices.getSingleStudentFromDB(email);
+const getSingleStudent: RequestHandler = catchAsync(async (req, res, next) => {
 
-        res.status(200).json({
-            success: true,
-            message: 'The students information is now live',
-            data: result
-        })
+    const email = req.params.email;
+    const result = await studentServices.getSingleStudentFromDB(email);
 
-    } catch (error) {
-        next(error)
-    }
-}
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'The students information is now live',
+        data: result
+    })
+
+})
 
 
 // delete students information
-const deleteSingleStudent = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const id = req.params.id;
-        const result = await studentServices.deleteStudentFromDB(id);
+const deleteSingleStudent: RequestHandler = catchAsync(async (req, res, next) => {
 
-        res.status(200).json({
-            success: true,
-            message: 'The students information is now deleted.',
-            data: result
-        })
+    const id = req.params.id;
+    const result = await studentServices.deleteStudentFromDB(id);
 
-    } catch (error) {
-        next(error)
-    }
-}
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'The students information is now deleted.',
+        data: result
+    })
+
+})
 
 
 // get all student information
-const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const result = await studentServices.getAllStudentsFromDB();
+const getAllStudents: RequestHandler = catchAsync(async (req, res, next) => {
 
-        res.status(200).json({
-            success: true,
-            message: 'The student list is now live!',
-            data: result
-        })
-    } catch (error) {
-        next(error)
-    }
-}
+    const result = await studentServices.getAllStudentsFromDB();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'The student list is now live!',
+        data: result
+    })
+
+})
 
 
 
