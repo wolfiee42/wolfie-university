@@ -10,7 +10,7 @@ const academicSemesterSchema = new Schema<TAcademicSemester>({
         require: true
     },
     year: {
-        type: Date,
+        type: String,
         require: true
     },
     code: {
@@ -30,4 +30,4 @@ const academicSemesterSchema = new Schema<TAcademicSemester>({
     }
 })
 
-export const academicSchemaModel = model<TAcademicSemester>('Academic Semester', academicSemesterSchema)
+export const academicModel = model<TAcademicSemester>('Academic Semester', academicSemesterSchema)

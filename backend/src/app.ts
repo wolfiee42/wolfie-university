@@ -1,6 +1,4 @@
 import express from 'express';
-import { userRouter } from './app/modules/user/04.user.route';
-import { StudentRoutes } from './app/modules/student/04.student.route';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import notFound from './app/middlewares/notFound';
 import router from './app/routes';
