@@ -8,4 +8,7 @@ const route = express.Router()
 
 route.post('/create-academic-semester', validateRequest(academicValidationSchema), academicController.createSemester)
 
+route.get('/', academicController.displayAllSemester)
+
+route.get('/:id', academicController.displaySingleSemester)
 export const academicSemesterRoutes = route;

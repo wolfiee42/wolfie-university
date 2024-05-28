@@ -13,6 +13,19 @@ const storeAcademicSemesterToDB = async (payload: TAcademicSemester) => {
 }
 
 
+const getSingleSemesterFromDb = async (id: string) => {
+    const result = await academicModel.find({ _id: id });
+    return result;
+}
+
+
+const getAllSemesterFromDB = async () => {
+    const result = await academicModel.find();
+    return result;
+}
+
 export const academicSemesterService = {
     storeAcademicSemesterToDB,
+    getSingleSemesterFromDb,
+    getAllSemesterFromDB
 }
