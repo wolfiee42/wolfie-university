@@ -38,6 +38,7 @@ const studentValidationSchema = z.object({
             name: userNameValidationSchema,
             gender: z.enum(['Male', 'Female']),
             email: z.string().email('Invalid email format').optional(),
+            academicSemester: z.string(),
             contantNo: z.number().positive('Contact number must be positive'),
             emergencyContactNo: z.number().positive('Contact number must be positive').optional(),
             bloodGroup: z.enum(['A', 'B', 'AB', 'O', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),

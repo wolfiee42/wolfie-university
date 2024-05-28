@@ -81,6 +81,11 @@ const StudentSchema = new Schema<TStudent, StudentModel>({
             message: '{VALUE} is not valid Email Type.',
         }
     },
+    academicSemester: {
+        type: Schema.Types.ObjectId,
+        ref: 'Academic Semesters',
+        required: true
+    },
     contantNo: { type: Number, required: true },
     emergencyContactNo: { type: Number },
     bloodGroup: {

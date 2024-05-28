@@ -7,6 +7,7 @@ export type TStudent = {
     name: TUserName;
     gender: 'Male' | 'Female';
     email?: string;
+    academicSemester: Types.ObjectId;
     contantNo: number;
     emergencyContactNo?: number;
     bloodGroup?: "A" | "B" | "AB" | "O" | "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
