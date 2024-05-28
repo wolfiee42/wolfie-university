@@ -11,4 +11,10 @@ route.post('/create-academic-semester', validateRequest(academicValidationSchema
 route.get('/', academicController.displayAllSemester)
 
 route.get('/:id', academicController.displaySingleSemester)
+
+route.patch('/:id', academicController.updateSemester)
+
+
+
+
 export const academicSemesterRoutes = route;

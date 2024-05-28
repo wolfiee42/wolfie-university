@@ -39,8 +39,25 @@ const displayAllSemester = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const updateSemester = async (req: Request, res: Response) => {
+
+    const { id } = req.params;
+    const filter = { _id: id }
+    const docs = req.body;
+
+    const result = await academicSemesterService.updateSemesterInformation(filter, docs);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Academic Semester's Information is Updated.",
+        data: result
+    })
+}
+
 export const academicController = {
     createSemester,
     displaySingleSemester,
-    displayAllSemester
+    displayAllSemester,
+    updateSemester
 } 
