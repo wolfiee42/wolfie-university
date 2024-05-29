@@ -9,7 +9,8 @@ const storeAcademicSemesterToDB = async (payload: TAcademicSemester) => {
     }
 
     const result = await academicModel.create(payload)
-    return result
+    return result;
+
 }
 
 
@@ -24,20 +25,19 @@ const getAllSemesterFromDB = async () => {
     return result;
 }
 
-const updateSemesterInformation = async (id: any, docs: any) => {
+const updateSemesterInformation = async (id: string, docs: Partial<TAcademicSemester>) => {
+
+    if (
+        docs.name &&
+        docs.code &&
+        SemesterNameAndCodeMapper[docs.name] !== docs.code
+    ) {
+        throw new Error('Invalid Semester Code');
+    }
 
     const result = await academicModel.findOneAndUpdate(
-        id,
-        {
-            name: docs.name,
-            year: docs.year,
-            code: docs.code,
-            startMonth: docs.startMonth,
-            endMonth: docs.endMonth
-        },
-        {
-            new: true
-        })
+        { _id: id }, docs, { new: true }
+    )
 
     return result;
 }

@@ -2,7 +2,7 @@ import express from "express"
 import { Router } from "express";
 import { academicController } from "./05.academicSemester.controller";
 import validateRequest from "../../middlewares/validateRequests";
-import { academicValidationSchema } from "./03.academicSemester.validation";
+import { academicValidationSchema, updateAcademicValidationSchema } from "./03.academicSemester.validation";
 
 const route = express.Router()
 
@@ -12,7 +12,7 @@ route.get('/', academicController.displayAllSemester)
 
 route.get('/:id', academicController.displaySingleSemester)
 
-route.patch('/:id', academicController.updateSemester)
+route.patch('/:id', validateRequest(updateAcademicValidationSchema), academicController.updateSemester)
 
 
 
