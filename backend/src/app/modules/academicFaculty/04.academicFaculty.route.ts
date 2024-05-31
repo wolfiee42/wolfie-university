@@ -12,3 +12,6 @@ route.get('/all-faculty', academicFacultyController.displayAllFaculty)
 route.get('/:facultyId', academicFacultyController.displaySingleFaculty)
 
 route.patch('/:facultyId', validateRequest(academicFacultyValidation.updateAcademicFacultyvalidation), academicFacultyController.updateFaculty)
+
+
+export const academicFacultyRoute = route;
