@@ -3,15 +3,7 @@ import { userModel } from "./02.user.model";
 
 // generate a 4 digit unique number
 // year code 4digitNum
-export const generateStudentID = async (payload: TAcademicSemester) => {
 
-    const currentID = (await findlastStudentId()) || (0).toString();
-    let increamentedId = (Number(currentID) + 1).toString().padStart(4, '0');
-
-    increamentedId = `${payload.year}${payload.code}${increamentedId}`
-
-    return increamentedId;
-}
 
 const findlastStudentId = async () => {
     const lastStudent = await userModel.findOne(
@@ -25,5 +17,32 @@ const findlastStudentId = async () => {
     )
         .sort({ createdAt: -1 }).lean()
 
-    return lastStudent?.id ? lastStudent?.id.substring(6) : undefined
+    return lastStudent?.id ? lastStudent?.id : undefined
 }
+
+
+export const generateStudentID = async (payload: TAcademicSemester) => {
+
+    let currentID = (0).toString();
+
+    const lastStudentId = await findlastStudentId();
+
+    const lastStudentSemesterYear = lastStudentId?.substring(0, 4);
+    const lastStudentSemesterCode = lastStudentId?.substring(4, 6);
+
+    const currentSemesterYear = payload.year;
+    const currentSemesterCode = payload.code;
+
+    if (lastStudentId && lastStudentSemesterCode === currentSemesterCode && lastStudentSemesterYear === currentSemesterYear) {
+        currentID = lastStudentId.substring(6)
+    }
+
+
+
+    let increamentedId = (Number(currentID) + 1).toString().padStart(4, '0');
+
+    increamentedId = `${payload.year}${payload.code}${increamentedId}`
+
+    return increamentedId;
+}
+

@@ -1,5 +1,4 @@
 import configaration from "../../configaration";
-import { TAcademicSemester } from "../academicSemester/01.academicSemester.interface";
 import { academicModel } from "../academicSemester/02.academicSemester.model";
 import { TStudent } from "../student/01.student.interface";
 import { studentModel } from "../student/02.student.model";

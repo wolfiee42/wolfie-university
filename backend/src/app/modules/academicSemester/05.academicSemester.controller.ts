@@ -42,9 +42,9 @@ const displayAllSemester = catchAsync(async (req: Request, res: Response) => {
 const updateSemester = catchAsync(async (req: Request, res: Response) => {
 
     const { id } = req.params;
-    const docs = req.body;
+    const payload = req.body;
 
-    const result = await academicSemesterService.updateSemesterInformation(id, docs);
+    const result = await academicSemesterService.updateSemesterInformation(id, payload);
 
     sendResponse(res, {
         success: true,
