@@ -6,7 +6,7 @@ import httpStatus from "http-status";
 
 const createAcademicDepartment = catchAsync(async (req: Request, res: Response) => {
 
-    const { departmentInformation } = req.body;
+    const departmentInformation = req.body;
     const result = await AcademicDepartmentService.storeAcademicDepartmentInDB(departmentInformation);
 
     sendResponse(res, {
@@ -25,7 +25,7 @@ const displayAllDepartment = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'Department is Live!',
+        message: 'All Academic Department are live!',
         data: result
     })
 })
@@ -38,7 +38,7 @@ const displaySingleDepartment = catchAsync(async (req: Request, res: Response) =
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'All Academic Department are live!',
+        message: 'Department is Live!',
         data: result
     })
 })
