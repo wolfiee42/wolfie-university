@@ -16,6 +16,7 @@ export type TStudent = {
     permanentAddress: TAddress;
     localGuardian: TLocalGuardian;
     isDeleted?: boolean;
+    academicDepartment: Types.ObjectId;
 }
 
 

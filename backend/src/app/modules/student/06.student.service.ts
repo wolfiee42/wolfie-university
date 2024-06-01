@@ -7,12 +7,26 @@ import { studentModel } from "./02.student.model";
 const getSingleStudentFromDB = async (email: string) => {
 
     // without aggregate
-    // const result = await studentModel.findOne({ email: email });
+    const result = await studentModel.findOne({ email: email }).populate(
+        {
+            path: 'academicDepartment',
+            populate: {
+                path: 'academicDepartment',
+            }
+        })
+        .populate(
+            {
+                path: 'academicSemester',
+                populate: {
+                    path: 'academicSemester'
+                }
+            }
+        );
 
     // with aggregate
-    const result = await studentModel.aggregate([
-        { $match: { email: email } }
-    ])
+    // const result = await studentModel.aggregate([
+    //     { $match: { email: email } }
+    // ])
     return result;
 }
 
@@ -25,7 +39,7 @@ const deleteStudentFromDB = async (id: string) => {
 
 // get all student information 
 const getAllStudentsFromDB = async () => {
-    const result = await studentModel.find();
+    const result = await studentModel.find().populate('academicDepartment');
     return result;
 }
 
