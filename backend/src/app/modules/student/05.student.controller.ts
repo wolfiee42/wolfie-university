@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import { Request, RequestHandler, Response } from "express";
 import { studentServices } from "./06.student.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
@@ -51,10 +51,25 @@ const getAllStudents: RequestHandler = catchAsync(async (req, res) => {
 
 })
 
+// update a single student information 
+const updateStudentInfo = catchAsync(async (req: Request, res: Response) => {
 
+    const { studentId } = req.params;
+    const { student } = req.body;
+
+    const result = await studentServices.updateStudentInfoInDB(studentId, student);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Student information updated.',
+        data: result
+    })
+})
 
 export const studentController = {
     getAllStudents,
     getSingleStudent,
-    deleteSingleStudent
+    deleteSingleStudent,
+    updateStudentInfo
 }

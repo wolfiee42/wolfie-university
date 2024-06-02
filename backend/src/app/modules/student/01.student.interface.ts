@@ -41,7 +41,7 @@ export type TAddress = {
 
 export type TUserName = {
     firstName: string;
-    middlename?: string;
+    middleName?: string;
     lastName: string;
 };
 

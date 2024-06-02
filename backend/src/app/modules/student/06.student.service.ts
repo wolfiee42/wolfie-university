@@ -3,6 +3,7 @@ import { studentModel } from "./02.student.model";
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import { userModel } from "../user/02.user.model";
+import { TStudent } from "./01.student.interface";
 
 
 
@@ -71,9 +72,68 @@ const getAllStudentsFromDB = async () => {
 }
 
 
+// update student information
+const updateStudentInfoInDB = async (studentId: string, payload: Partial<TStudent>) => {
+
+    /*
+    guardian:{
+        fatherOccuoation :"Teacher"
+    }
+
+    guardian.fatherOccupation: "Teacher"
+
+    */
+
+
+    const { name, guardian, presentAddress, permanentAddress, localGuardian, ...remainingStudentData } = payload
+
+
+    const modifiedDataa: Record<string, unknown> = {
+        ...remainingStudentData
+    }
+
+    if (name && Object.keys(name).length) {
+        for (const [key, value] of Object.entries(name)) {
+            modifiedDataa[`name.${key}`] = value;
+        }
+    }
+    if (presentAddress && Object.keys(presentAddress).length) {
+        for (const [key, value] of Object.entries(presentAddress)) {
+            modifiedDataa[`presentAddress.${key}`] = value;
+        }
+    }
+    if (permanentAddress && Object.keys(permanentAddress).length) {
+        for (const [key, value] of Object.entries(permanentAddress)) {
+            modifiedDataa[`permanentAddress.${key}`] = value;
+        }
+    }
+    if (localGuardian && Object.keys(localGuardian).length) {
+        for (const [key, value] of Object.entries(localGuardian)) {
+            modifiedDataa[`localGuardian.${key}`] = value;
+        }
+    }
+    if (guardian && Object.keys(guardian).length) {
+        for (const [key, value] of Object.entries(guardian)) {
+            modifiedDataa[`guardian.${key}`] = value;
+        }
+    }
+
+    console.log(modifiedDataa);
+
+    const result = await studentModel.findOneAndUpdate(
+        { id: studentId },
+        modifiedDataa,
+        { new: true, runValidators: true }
+    )
+
+    return result;
+
+}
+
 
 export const studentServices = {
     getAllStudentsFromDB,
     getSingleStudentFromDB,
-    deleteStudentFromDB
+    deleteStudentFromDB,
+    updateStudentInfoInDB
 }
