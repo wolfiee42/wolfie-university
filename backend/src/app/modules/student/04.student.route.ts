@@ -4,7 +4,7 @@ import { studentController } from './05.student.controller';
 const router = express.Router();
 
 // getting a single students data 
-router.get('/:email', studentController.getSingleStudent)
+router.get('/:studentId', studentController.getSingleStudent)
 
 // delete a single students data 
 router.delete('/:id', studentController.deleteSingleStudent)

@@ -120,7 +120,10 @@ const StudentSchema = new Schema<TStudent, StudentModel>(
             },
             contantNo: { type: String, required: true }
         },
-        isDeleted: { type: Boolean, default: false },
+        isDeleted: {
+            type: Boolean,
+            default: false
+        },
         academicDepartment: {
             type: Schema.Types.ObjectId,
             ref: 'Academic Department',

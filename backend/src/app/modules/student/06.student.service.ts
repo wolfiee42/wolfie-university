@@ -1,27 +1,18 @@
+import mongoose, { startSession } from "mongoose";
 import { studentModel } from "./02.student.model";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
+import { userModel } from "../user/02.user.model";
 
 
 
 
 // get a single students information
-const getSingleStudentFromDB = async (email: string) => {
+const getSingleStudentFromDB = async (studentId: string) => {
 
     // without aggregate
-    const result = await studentModel.findOne({ email: email }).populate(
-        {
-            path: 'academicDepartment',
-            populate: {
-                path: 'academicDepartment',
-            }
-        })
-        .populate(
-            {
-                path: 'academicSemester',
-                populate: {
-                    path: 'academicSemester'
-                }
-            }
-        );
+    const result = await studentModel.findOne({ id: studentId });
+
 
     // with aggregate
     // const result = await studentModel.aggregate([
@@ -32,8 +23,44 @@ const getSingleStudentFromDB = async (email: string) => {
 
 // get a single students information
 const deleteStudentFromDB = async (id: string) => {
-    const result = await studentModel.updateOne({ id }, { isDeleted: true })
-    return result;
+
+    // starting Transaction & Rollback
+    const session = await mongoose.startSession();
+
+    try {
+        session.startTransaction();
+
+        //delete Student  // transaction-01
+        const deletedStudent = await studentModel.findOneAndUpdate(
+            { id },
+            { isDeleted: true },
+            { new: true, session }
+        );
+        if (!deletedStudent) {
+            throw new AppError(httpStatus.BAD_REQUEST, 'The Student is not deleted.');
+        }
+
+        //delete user  // transaction-02
+        const deletedUser = await userModel.findOneAndUpdate(
+            { id },
+            { isDeleted: true },
+            { new: true, session }
+        );
+        if (!deletedUser) {
+            throw new AppError(httpStatus.BAD_REQUEST, 'The USer is not deleted.');
+        }
+
+        await session.commitTransaction();
+        await session.endSession();
+
+        return deletedStudent;
+
+    } catch (error) {
+        await session.abortTransaction();
+        await session.endSession();
+    }
+
+
 }
 
 
