@@ -12,7 +12,7 @@ const getAllDepartment = async () => {
 }
 
 const getSingleDepartment = async (departmentId: string) => {
-    const result = await AcademicDepartmentModel.findById(departmentId).populate('academicSemester');
+    const result = await AcademicDepartmentModel.findById(departmentId)
     return result;
 }
 

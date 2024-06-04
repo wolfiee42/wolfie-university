@@ -21,16 +21,16 @@ const academicDepartment = new Schema<TAcademicDepartment>(
 )
 
 // checking whether the department is stored before or not in the db. if stored then returning with an error else the function is running as it is.
-academicDepartment.pre('save', async function (next) {
+// academicDepartment.pre('save', async function (next) {
 
-    const isDepartmentExist = await AcademicDepartmentModel.findOne({ name: this.name })
+//     const isDepartmentExist = await AcademicDepartmentModel.findOne({ name: this.name })
 
-    if (isDepartmentExist) {
-        throw new AppError(httpStatus.NOT_FOUND, 'Department is already exist.')
-    }
-    next();
+//     if (isDepartmentExist) {
+//         throw new AppError(httpStatus.NOT_FOUND, 'Department is already exist.')
+//     }
+//     next();
 
-});
+// });
 
 academicDepartment.pre('findOneAndUpdate', async function (next) {
 

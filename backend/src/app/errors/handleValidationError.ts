@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { TErrorSource } from "../interface/error";
+import { TErrorSource, TGenericErrorResponse } from "../interface/error";
 
-const handlerValidationError = (err: mongoose.Error.ValidationError) => {
+const handlerValidationError = (err: mongoose.Error.ValidationError): TGenericErrorResponse => {
     const errorSourse: TErrorSource = Object.values(err.errors).map((val: mongoose.Error.ValidatorError | mongoose.Error.CastError) => {
         return {
             path: val?.path,
@@ -13,7 +13,7 @@ const handlerValidationError = (err: mongoose.Error.ValidationError) => {
 
     return {
         statusCode,
-        message: "Zod validation error",
+        message: "Mongoose validation error",
         errorSourse,
     }
 }
