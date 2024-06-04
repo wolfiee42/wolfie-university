@@ -1,7 +1,9 @@
-import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
-import { ZodError, ZodIssue } from "zod";
+import { ErrorRequestHandler } from "express";
+import { ZodError } from "zod";
 import { TErrorSource } from "../interface/error";
 import configaration from "../configaration";
+import handleZodError from "../errors/handleZodError";
+import handlerValidationError from "../errors/handleValidationError";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
@@ -17,42 +19,31 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         }
     ]
 
-    const handleZodError = (err: ZodError) => {
-        const statusCode = 400;
-
-        const errorSourse: TErrorSource = err.issues.map((issue: ZodIssue) => {
-            return {
-                path: issue?.path[issue.path.length - 1],
-                message: issue.message
-            }
-        })
-
-        return {
-            statusCode,
-            message: "Zod Validation error.",
-            errorSourse,
-            stack: configaration.environment === 'development' ? err?.stack : null,
-        }
-
-    }
-
 
     if (err instanceof ZodError) {
 
         const simplifiedError = handleZodError(err)
-        statusCode = simplifiedError?.statusCode;
-        message = simplifiedError?.message;
-        errorSourse = simplifiedError?.errorSourse;
+        statusCode = simplifiedError.statusCode;
+        message = simplifiedError.message;
+        errorSourse = simplifiedError.errorSourse
 
-        console.log(simplifiedError);
+    } else if (err.name === "ValidationError") {
+
+        const simplifiedError = handlerValidationError(err);
+        statusCode = simplifiedError.statusCode;
+        message = simplifiedError.message;
+        errorSourse = simplifiedError.errorSourse;
 
     }
 
-
+    // ultimate error handler
     return res.status(statusCode).json({
+
         success: false,
         message,
         errorSourse,
+        stack: configaration.environment === 'development' ? err.stack : null
+
     })
 }
 

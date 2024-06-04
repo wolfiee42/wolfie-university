@@ -6,7 +6,9 @@ import { departmentValidation } from "./03.academicDepartment.validation";
 const route = Router();
 
 
-route.post('/create-academic-department', validateRequest(departmentValidation.createAcademicDepartmentValidation), academicDepartmentController.createAcademicDepartment)
+route.post('/create-academic-department',
+    //  validateRequest(departmentValidation.createAcademicDepartmentValidation),
+    academicDepartmentController.createAcademicDepartment)
 
 route.get('/all-department', academicDepartmentController.displayAllDepartment)
 
