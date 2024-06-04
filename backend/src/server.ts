@@ -1,7 +1,9 @@
 import app from "./app";
 import mongoose from "mongoose";
 import configaration from "./app/configaration";
+import { Server } from 'http';
 
+let server: Server;
 
 async function main() {
 
@@ -9,7 +11,7 @@ async function main() {
 
         await mongoose.connect(configaration.database_url as string);
 
-        app.listen(configaration.port, () => {
+        server = app.listen(configaration.port, () => {
             console.log(`Example app listening on port ${configaration.port}`)
         });
 
@@ -21,3 +23,20 @@ async function main() {
 
 
 main()
+
+process.on('unhandledRejection', () => {
+    console.log(`Unhandled Rejection. Shutting down...`);
+    if (server) {
+        server.close(() => {
+            process.exit(1)
+        })
+    }
+    process.exit(1);
+})
+
+process.on('uncaughtException', () => {
+
+    console.log(`Uncaught Exception. Shutting down...`);
+    process.exit(1);
+
+})
