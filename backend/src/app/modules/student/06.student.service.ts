@@ -68,11 +68,20 @@ const deleteStudentFromDB = async (id: string) => {
 // get all student information 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 
+    const queryObj = { ...query };
     let searchTerm = '';
-    const serachableFieldForStudent: string[] = ['email', 'name.firstName', 'presentAddress.district']
+    let sort = '-createdAt';
+    let limit = 1;
+
+    const serachableFieldForStudent: string[] = ['email', 'name.firstName', 'presentAddress.district'];
+
     if (query?.searchTerm) {
         searchTerm = query.searchTerm as string;
     }
+
+    const excludedFields = ['searchTerm', 'sort', 'limit'];
+    excludedFields.forEach((el) => delete queryObj[el]);
+
 
     const studentQuery = studentModel.find({
         $or: serachableFieldForStudent.map((field) => ({
@@ -83,9 +92,22 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
         }))
     })
 
-    const result = await studentQuery.find(query)
+    const filterQuery = studentQuery.find(queryObj);
 
-    return result;
+    if (query.sort) {
+        sort = query.sort as string;
+    }
+
+    const sortQuery = filterQuery.sort(sort);
+
+    if (query.limit) {
+        limit = query.limit as number;
+    }
+
+    const limitQuery = await sortQuery.limit(limit);
+
+
+    return limitQuery;
 }
 
 
