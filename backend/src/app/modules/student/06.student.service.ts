@@ -69,19 +69,21 @@ const deleteStudentFromDB = async (id: string) => {
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 
     let searchTerm = '';
-
+    const serachableFieldForStudent: string[] = ['email', 'name.firstName', 'presentAddress.district']
     if (query?.searchTerm) {
         searchTerm = query.searchTerm as string;
     }
 
-    const result = await studentModel.find({
-        $or: ['email', 'name.firstName', 'presentAddress.district'].map((field) => ({
+    const studentQuery = studentModel.find({
+        $or: serachableFieldForStudent.map((field) => ({
             [field]: {
                 $regex: searchTerm,
                 $options: 'i',
             }
         }))
     })
+
+    const result = await studentQuery.find(query)
 
     return result;
 }
