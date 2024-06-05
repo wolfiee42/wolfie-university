@@ -40,7 +40,7 @@ const deleteSingleStudent: RequestHandler = catchAsync(async (req, res) => {
 // get all student information
 const getAllStudents: RequestHandler = catchAsync(async (req, res) => {
 
-    const result = await studentServices.getAllStudentsFromDB();
+    const result = await studentServices.getAllStudentsFromDB(req.query);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,

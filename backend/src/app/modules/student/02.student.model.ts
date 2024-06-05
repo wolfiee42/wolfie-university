@@ -16,7 +16,7 @@ const userNameSchema = new Schema<TUserName>({
             message: '{VALUE} is not in capitalized format.'
         }
     },
-    middlename: {
+    middleName: {
         type: String
     },
     lastName: {

@@ -66,8 +66,23 @@ const deleteStudentFromDB = async (id: string) => {
 
 
 // get all student information 
-const getAllStudentsFromDB = async () => {
-    const result = await studentModel.find().populate('academicDepartment');
+const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
+
+    let searchTerm = '';
+
+    if (query?.searchTerm) {
+        searchTerm = query.searchTerm as string;
+    }
+
+    const result = await studentModel.find({
+        $or: ['email', 'presentAddress'].map((field) => ({
+            [field]: {
+                $regex: searchTerm,
+                $options: 'i',
+            }
+        }))
+    })
+
     return result;
 }
 
