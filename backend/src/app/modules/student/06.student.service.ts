@@ -75,7 +75,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     }
 
     const result = await studentModel.find({
-        $or: ['email', 'presentAddress'].map((field) => ({
+        $or: ['email', 'name.firstName', 'presentAddress.district'].map((field) => ({
             [field]: {
                 $regex: searchTerm,
                 $options: 'i',
