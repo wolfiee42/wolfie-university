@@ -70,79 +70,21 @@ const deleteStudentFromDB = async (id: string) => {
 // get all student information 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 
-    // const queryObj = { ...query };
-    // let searchTerm = '';
-    // let sort = '-createdAt';
-    // let limit = 1;
-    // let page = 1;
-    // let skip = 0;
-    // let fields = '-__v';
 
+    if (query) {
+        const studentQuery = new QueryBuilder(studentModel.find(), query)
+            .search(serachableFieldForStudent)
+            .filter()
+            .sort()
+            .paginate()
+            .fields();
 
-    // const serachableFieldForStudent: string[] = ['email', 'name.firstName', 'presentAddress.district'];
+        const result = await studentQuery.modelQuery;
+        return result;
+    }
 
-    // if (query?.searchTerm) {
-    //     searchTerm = query.searchTerm as string;
-    // }
-
-    // const excludedFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
-    // excludedFields.forEach((el) => delete queryObj[el]);
-
-
-    // const studentQuery = studentModel.find({
-    //     $or: serachableFieldForStudent.map((field) => ({
-    //         [field]: {
-    //             $regex: searchTerm,
-    //             $options: 'i',
-    //         }
-    //     }))
-    // })
-
-    // const filterQuery = studentQuery.find(queryObj);
-
-    // if (query.sort) {
-    //     sort = query.sort as string;
-    // }
-
-    // const sortQuery = filterQuery.sort(sort);
-
-    // if (query.limit) {
-    //     limit = Number(query.limit);
-    // }
-
-    // if (query.page) {
-    //     page = Number(query.page);
-    //     skip = (page - 1) * limit;
-    // }
-
-    // const paginateQuery = sortQuery.skip(skip);
-
-    // const limitQuery = paginateQuery.limit(limit);
-
-
-    // if (query.fields) {
-    //     fields = (query.fields as string).split(',').join(' ');
-    // }
-
-    // const fieldQuery = await limitQuery.select(fields);
-
-
-    // return fieldQuery;
-
-
-    const studentQuery = new QueryBuilder(studentModel.find(), query)
-        .search(serachableFieldForStudent)
-        .filter()
-        .sort()
-        .paginate()
-        .fields();
-
-    const result = await studentQuery.modelQuery;
-
-    // const result = await studentModel.find();
-
+    const result = await studentModel.find();
     return result;
-
 
 }
 

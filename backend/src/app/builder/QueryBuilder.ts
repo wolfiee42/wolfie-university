@@ -10,6 +10,7 @@ class QueryBuilder<T> {
     }
 
     search(searchableFields: string[]) {
+
         const searchTerm = this?.query?.searchTerm
         if (searchTerm) {
             this.modelQuery = this.modelQuery.find({
@@ -21,6 +22,7 @@ class QueryBuilder<T> {
             })
         }
         return this
+
     }
 
     filter() {
@@ -46,8 +48,8 @@ class QueryBuilder<T> {
 
     paginate() {
 
-        const limit = Number(this?.query?.limit) || 10;
         const page = Number(this?.query?.page) || 1;
+        const limit = Number(this?.query?.limit) || 10;
         const skip = (page - 1) * limit;
 
         this.modelQuery = this.modelQuery.skip(skip).limit(limit);
