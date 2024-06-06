@@ -4,6 +4,8 @@ import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import { userModel } from "../user/02.user.model";
 import { TStudent } from "./01.student.interface";
+import QueryBuilder from "../../builder/QueryBuilder";
+import { serachableFieldForStudent } from "./00.student.constants";
 
 
 
@@ -68,66 +70,80 @@ const deleteStudentFromDB = async (id: string) => {
 // get all student information 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 
-    const queryObj = { ...query };
-    let searchTerm = '';
-    let sort = '-createdAt';
-    let limit = 1;
-    let page = 1;
-    let skip = 0;
-    let fields = '-__v';
+    // const queryObj = { ...query };
+    // let searchTerm = '';
+    // let sort = '-createdAt';
+    // let limit = 1;
+    // let page = 1;
+    // let skip = 0;
+    // let fields = '-__v';
 
 
-    const serachableFieldForStudent: string[] = ['email', 'name.firstName', 'presentAddress.district'];
+    // const serachableFieldForStudent: string[] = ['email', 'name.firstName', 'presentAddress.district'];
 
-    if (query?.searchTerm) {
-        searchTerm = query.searchTerm as string;
-    }
+    // if (query?.searchTerm) {
+    //     searchTerm = query.searchTerm as string;
+    // }
 
-    const excludedFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
-    excludedFields.forEach((el) => delete queryObj[el]);
-
-    console.log({ queryObj }, { query });
+    // const excludedFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
+    // excludedFields.forEach((el) => delete queryObj[el]);
 
 
-    const studentQuery = studentModel.find({
-        $or: serachableFieldForStudent.map((field) => ({
-            [field]: {
-                $regex: searchTerm,
-                $options: 'i',
-            }
-        }))
-    })
+    // const studentQuery = studentModel.find({
+    //     $or: serachableFieldForStudent.map((field) => ({
+    //         [field]: {
+    //             $regex: searchTerm,
+    //             $options: 'i',
+    //         }
+    //     }))
+    // })
 
-    const filterQuery = studentQuery.find(queryObj);
+    // const filterQuery = studentQuery.find(queryObj);
 
-    if (query.sort) {
-        sort = query.sort as string;
-    }
+    // if (query.sort) {
+    //     sort = query.sort as string;
+    // }
 
-    const sortQuery = filterQuery.sort(sort);
+    // const sortQuery = filterQuery.sort(sort);
 
-    if (query.limit) {
-        limit = Number(query.limit);
-    }
+    // if (query.limit) {
+    //     limit = Number(query.limit);
+    // }
 
-    if (query.page) {
-        page = Number(query.page);
-        skip = (page - 1) * limit;
-    }
+    // if (query.page) {
+    //     page = Number(query.page);
+    //     skip = (page - 1) * limit;
+    // }
 
-    const paginateQuery = sortQuery.skip(skip);
+    // const paginateQuery = sortQuery.skip(skip);
 
-    const limitQuery = paginateQuery.limit(limit);
-
-
-    if (query.fields) {
-        fields = (query.fields as string).split(',').join(' ');
-    }
-
-    const fieldQuery = await limitQuery.select(fields);
+    // const limitQuery = paginateQuery.limit(limit);
 
 
-    return fieldQuery;
+    // if (query.fields) {
+    //     fields = (query.fields as string).split(',').join(' ');
+    // }
+
+    // const fieldQuery = await limitQuery.select(fields);
+
+
+    // return fieldQuery;
+
+
+    const studentQuery = new QueryBuilder(studentModel.find(), query)
+        .search(serachableFieldForStudent)
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
+
+    const result = await studentQuery.modelQuery;
+
+    // const result = await studentModel.find();
+
+    return result;
+
+
 }
 
 
