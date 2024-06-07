@@ -12,19 +12,19 @@ const createCourse = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: "Course Create Successfully.",
+        message: "Course Created Successfully.",
         data: result
     })
 
 })
 
 const displayAllCourse = catchAsync(async (req: Request, res: Response) => {
-    const result = await courseService.getAllCourseFromDB();
+    const result = await courseService.getAllCourseFromDB(req.query);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: "All Course are live!",
+        message: "The Course list is now live!",
         data: result
     })
 })
@@ -36,7 +36,7 @@ const displaySingleCourse = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: "Course is live!",
+        message: "The Course information is now live!",
         data: result
     })
 
@@ -50,7 +50,7 @@ const deleteACourse = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: "Course is removed!",
+        message: "The Course is now deleted!",
         data: result
     })
 
