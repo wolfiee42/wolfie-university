@@ -11,10 +11,10 @@ import { serachableFieldForStudent } from "./00.student.constants";
 
 
 // get a single students information
-const getSingleStudentFromDB = async (studentId: string) => {
+const getSingleStudentFromDB = async (id: string) => {
 
     // without aggregate
-    const result = await studentModel.findOne({ id: studentId });
+    const result = await studentModel.findById(id);
 
 
     // with aggregate
@@ -34,8 +34,8 @@ const deleteStudentFromDB = async (id: string) => {
         session.startTransaction();
 
         //delete Student  // transaction-01
-        const deletedStudent = await studentModel.findOneAndUpdate(
-            { id },
+        const deletedStudent = await studentModel.findByIdAndUpdate(
+            id,
             { isDeleted: true },
             { new: true, session }
         );
@@ -43,9 +43,13 @@ const deleteStudentFromDB = async (id: string) => {
             throw new AppError(httpStatus.BAD_REQUEST, 'The Student is not deleted.');
         }
 
+        // get user _id from deletedStudent
+        const userId = deletedStudent.id;
+
+
         //delete user  // transaction-02
-        const deletedUser = await userModel.findOneAndUpdate(
-            { id },
+        const deletedUser = await userModel.findByIdAndUpdate(
+            userId,
             { isDeleted: true },
             { new: true, session }
         );
@@ -90,7 +94,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 
 
 // update student information
-const updateStudentInfoInDB = async (studentId: string, payload: Partial<TStudent>) => {
+const updateStudentInfoInDB = async (id: string, payload: Partial<TStudent>) => {
 
     /*
     guardian:{
@@ -136,8 +140,8 @@ const updateStudentInfoInDB = async (studentId: string, payload: Partial<TStuden
     }
 
 
-    const result = await studentModel.findOneAndUpdate(
-        { id: studentId },
+    const result = await studentModel.findByIdAndUpdate(
+        id,
         modifiedDataa,
         { new: true, runValidators: true }
     )

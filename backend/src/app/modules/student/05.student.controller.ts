@@ -8,8 +8,8 @@ import catchAsync from "../../utils/catchAsync";
 // get a single students information
 const getSingleStudent: RequestHandler = catchAsync(async (req, res) => {
 
-    const { studentId } = req.params;
-    const result = await studentServices.getSingleStudentFromDB(studentId);
+    const { id } = req.params;
+    const result = await studentServices.getSingleStudentFromDB(id);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -54,10 +54,10 @@ const getAllStudents: RequestHandler = catchAsync(async (req, res) => {
 // update a single student information 
 const updateStudentInfo = catchAsync(async (req: Request, res: Response) => {
 
-    const { studentId } = req.params;
+    const { id } = req.params;
     const { student } = req.body;
 
-    const result = await studentServices.updateStudentInfoInDB(studentId, student);
+    const result = await studentServices.updateStudentInfoInDB(id, student);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
