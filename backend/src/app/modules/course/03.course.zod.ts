@@ -18,6 +18,20 @@ const courseSchemaValidation = z.object({
     })
 })
 
+const updateCourseSchemaValidation = z.object({
+    body: z.object({
+
+        title: z.string().trim().nonempty().optional(),
+        prefix: z.string().trim().nonempty().optional(),
+        code: z.number().positive().optional(), // Ensures positive integer code
+        credit: z.number().positive().optional(), // Ensures positive integer credit
+        isDeleted: z.boolean().optional(),
+        preRequisiteCourses: z.array(preRequisiteCourseSchemaValidation).optional(),
+
+    })
+})
+
 export const courseValidation = {
-    courseSchemaValidation
+    courseSchemaValidation,
+    updateCourseSchemaValidation
 };

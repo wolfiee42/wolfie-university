@@ -13,4 +13,6 @@ route.get('/:id', courseController.displaySingleCourse)
 
 route.delete('/:id', courseController.deleteACourse)
 
+route.patch('/:id', validateRequest(courseValidation.updateCourseSchemaValidation), courseController.updateAcourse)
+
 export const CourseRoute = route;
