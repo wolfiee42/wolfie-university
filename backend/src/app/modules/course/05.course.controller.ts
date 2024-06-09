@@ -73,10 +73,28 @@ const updateAcourse = catchAsync(async (req: Request, res: Response) => {
 })
 
 
+const assignFacultiesWithDB = catchAsync(async (req: Request, res: Response) => {
+
+    const { courseId } = req.params;
+    const { faculties } = req.body;
+
+    const result = await courseService.assignFacultiesWithCourseInDB(courseId, faculties);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "The Course is Assigned with faculties!",
+        data: result
+    })
+
+})
+
+
 export const courseController = {
     createCourse,
     displayAllCourse,
     displaySingleCourse,
     deleteACourse,
-    updateAcourse
+    updateAcourse,
+    assignFacultiesWithDB
 }
