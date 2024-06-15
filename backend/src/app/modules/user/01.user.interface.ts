@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Model } from 'mongoose';
-// import { USER_ROLE } from './user.constant';
+import { USER_ROLE } from './00.user.constant';
 
 export interface TUser {
     id: string;
@@ -26,4 +26,4 @@ export interface UserModel extends Model<TUser> {
     ): boolean;
 }
 
-// export type TUserRole = keyof typeof USER_ROLE;
+export type TUserRole = keyof typeof USER_ROLE;
