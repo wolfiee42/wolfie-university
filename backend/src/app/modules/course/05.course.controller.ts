@@ -21,6 +21,9 @@ const createCourse = catchAsync(async (req: Request, res: Response) => {
 const displayAllCourse = catchAsync(async (req: Request, res: Response) => {
     const result = await courseService.getAllCourseFromDB(req.query);
 
+    console.log(req.cookies);
+
+
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
