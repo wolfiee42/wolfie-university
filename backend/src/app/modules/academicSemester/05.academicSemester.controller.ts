@@ -6,7 +6,6 @@ import httpStatus from "http-status";
 
 const createSemester = catchAsync(async (req: Request, res: Response) => {
     const result = await academicSemesterService.storeAcademicSemesterToDB(req.body);
-    console.log(result);
 
     sendResponse(res, {
         success: true,

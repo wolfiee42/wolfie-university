@@ -19,10 +19,8 @@ const createCourse = catchAsync(async (req: Request, res: Response) => {
 })
 
 const displayAllCourse = catchAsync(async (req: Request, res: Response) => {
+
     const result = await courseService.getAllCourseFromDB(req.query);
-
-    console.log(req.cookies);
-
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -30,9 +28,11 @@ const displayAllCourse = catchAsync(async (req: Request, res: Response) => {
         message: "The Course list is now live!",
         data: result
     })
+
 })
 
 const displaySingleCourse = catchAsync(async (req: Request, res: Response) => {
+
     const { id } = req.params;
     const result = await courseService.getSingleCourseFromDB(id);
 
